@@ -3,7 +3,8 @@ import axios from "axios";
 
 export default class BeerDetail extends Component {
   state = {
-    beer: null
+    beer: undefined,
+    Loading: true
   };
 
   componentDidMount() {
@@ -13,14 +14,25 @@ export default class BeerDetail extends Component {
           this.props.match.params.beerId
       )
       .then(response => {
-        this.setState({ beer: response.data });
+        this.setState({ beer: response.data, Loading: false });
       });
   }
   render() {
-    console.log(this.state.beer);
+    if (this.state.Loading) {
+      return <h1>Loading....</h1>;
+    }
     return (
       <div>
-        <h1>hello</h1>
+        <p>
+          <img
+            src={this.state.beer.image_url}
+            alt={"Image of " + this.state.beer.name}
+          />
+
+          {this.state.beer.name}
+          {this.state.beer.tagline}
+          {this.state.beer.contributed_by}
+        </p>
       </div>
     );
   }
